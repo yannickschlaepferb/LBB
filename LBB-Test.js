@@ -5,8 +5,8 @@ const app = express();
 const port = 3000;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-const ZLICreds = { email: "some@gmail.com", password: "m295" };
-const coolCreds = { email: "literallyany@gmail.com", password: "m295"};
+//const ZLICreds = { email: "some@gmail.com", password: "m295" };
+//const coolCreds = { email: "literallyany@gmail.com", password: "m295"};
 
 let TODOs = [{"id":1,"Title":"nec euismod","Creation Date":"5/4/2023","Fulfillment Date":"3/24/2023"},
 	{"id":2,"Title":"lacus","Creation Date":"10/2/2022","Fulfillment Date":"10/12/2022"},
@@ -78,7 +78,18 @@ app.post("/login", (req, res) => {
 	}
 });
 
+app.get("/verify", (request, response,) => {
+	if (request.session.cookie   ) {
+		response.sendStatus(200);
+	} else {
+		response.sendStatus(401);
+	}
+});
 
+app.delete("/logout", (req, res) => {
+	req.session.destroy();
+	res.sendStatus(204);
+});
 
 app.listen(port, ()=> {
 	console.group(`Example app listening on port ${port}`);
