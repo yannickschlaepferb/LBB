@@ -39,15 +39,15 @@ app.post("/tasks", (request, response) => {
 	response.status(201).send(newTask);
 });
 
-app.put("/tasks/:id", (req, res) => {
-	const idParams = req.params.id;
-	const taskChange = req.body;
-	const taskIndex = TODOs.findIndex((task) => task.id === idParams);
+app.put("/tasks/:id", (request, response) => {
+	const idParams = request.params.id;
+	const taskChange = request.body;
+	const taskIndex = TODOs.findIndex((task) => task.id === Number(idParams));    
 	if (taskIndex !== -1) {
 		TODOs[taskIndex] = taskChange;
-		res.json(TODOs);
+		response.json(TODOs);
 	} else {
-		res.sendStatus(404);
+		response.sendStatus(404);
 	}
 });
 
@@ -55,7 +55,6 @@ app.put("/tasks/:id", (req, res) => {
 app.delete("/tasks/:id", (request, response) => {
 	const idParams = request.params.id;
 	const task = TODOs.find((task) => task.id === idParams);
-
 	if (task) {
 		const taskIndex = TODOs.indexOf(task);
 		TODOs.splice(taskIndex, 1);
