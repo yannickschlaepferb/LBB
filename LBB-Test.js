@@ -21,8 +21,8 @@ let TODOs = [{"id":1,"Title":"nec euismod","Creation Date":"5/4/2023","Fulfillme
 //generated with Mockaroo
 
 
-app.get("/tasks", (req, res) => {
-	res.json(TODOs);
+app.get("/tasks", (request, response) => {
+	response.json(TODOs);
 });
 
 app.get("/tasks/:id", (request, response) => {
@@ -43,11 +43,11 @@ app.post("/tasks", (request, response) => {
 
 app.put("/tasks/:id", (request, response) => {
 	const idParams = request.params.id;
-	const taskChange = request.body;
+	const realTask = request.body;
 	const taskIndex = TODOs.findIndex((task) => task.id === Number(idParams));    
-	if (taskIndex !== -1) {
-		TODOs[taskIndex] = taskChange;
-		response.json(TODOs);
+	if (taskIndex > -1) {
+		TODOs[taskIndex] = realTask;
+		response.json(realTask);
 	} else {
 		response.sendStatus(404);
 	}
@@ -69,7 +69,7 @@ app.delete("/tasks/:id", (request, response) => {
 app.post("/login", (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
-	if (email && password === "m295") {
+	if (password === "m295") {
 		req.session.cookie = email;
 		res.sendStatus(200);
 	}
@@ -86,9 +86,9 @@ app.get("/verify", (request, response,) => {
 	}
 });
 
-app.delete("/logout", (req, res) => {
-	req.session.destroy();
-	res.sendStatus(204);
+app.delete("/logout", (request, response) => {
+	request.session.destroy();
+	response.sendStatus(204);
 });
 
 app.listen(port, ()=> {
