@@ -3,8 +3,18 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const session = require("express-session");
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+
+app.use(
+	session({
+		secret: "supersecretlbb",
+		resave: false,
+		saveUninitialized: true,
+		cookie: {},
+	})
+);
 const ZLICreds = { email: "some@gmail.com", password: "m295" };
 const coolCreds = { email: "literallyany@gmail.com", password: "m295"};
 
@@ -65,15 +75,14 @@ app.delete("/tasks/:id", (request, response) => {
 		response.sendStatus(404);
 	}
 });
-
 app.post("/login", (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;
-	if (password === "m295") {
-		req.session.cookie = email;
-		res.sendStatus(200);
-	}
-	else {
+	if (password === "m295" && email === "literallyany@gmail.com") {
+		req.session.email = email;
+		req.session.password = password;
+		res.status(200).send("It works!!!");
+	} else {
 		res.sendStatus(401);
 	}
 });
