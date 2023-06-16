@@ -95,7 +95,10 @@ app.get("/verify", (request, response,) => {
 	}
 });
 
-
+app.delete("/logout", (request, response) => {
+	request.session.destroy();
+	response.sendStatus(204);
+});
 
 app.listen(port, ()=> {
 	console.group(`Example app listening on port ${port}`);
