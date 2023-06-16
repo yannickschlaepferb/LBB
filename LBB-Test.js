@@ -5,6 +5,8 @@ const app = express();
 const port = 3000;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+const ZLICreds = { email: "some@gmail.com", password: "m295" };
+const coolCreds = { email: "literallyany@gmail.com", password: "m295"};
 
 let TODOs = [{"id":1,"Title":"nec euismod","Creation Date":"5/4/2023","Fulfillment Date":"3/24/2023"},
 	{"id":2,"Title":"lacus","Creation Date":"10/2/2022","Fulfillment Date":"10/12/2022"},
@@ -64,7 +66,17 @@ app.delete("/tasks/:id", (request, response) => {
 	}
 });
 
-
+app.post("/login", (req, res) => {
+	const email = req.body.email;
+	const password = req.body.password;
+	if (email && password === "m295") {
+		req.session.cookie = email;
+		res.sendStatus(200);
+	}
+	else {
+		res.sendStatus(401);
+	}
+});
 
 
 
